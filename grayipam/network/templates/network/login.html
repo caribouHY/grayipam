@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+ログイン - WhiteIPAM
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex w-100 h-100 mx-auto flex-column">
+  <main class="m-auto">
+    <h1 class="text-center mb-4">GrayIPAM</h1>
+    <form method="post" class="pb-5">
+      {% csrf_token %}
+      <div class="form-floating mb-3">
+        {{ form.username}}
+        <label for="{{ form.username.label.id_for_label}}">ユーザー名</label>
+      </div>
+      <div class="form-floating mb-3">
+        {{ form.password}}
+        <label for="{{ form.password.label.id_for_label}}">パスワード</label>
+      </div>
+      <button type="submit" class="btn btn-lg btn-primary w-100">ログイン</button>
+    </form>
+  </main>
+</div>
+{% endblock %}

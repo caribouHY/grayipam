@@ -8,8 +8,8 @@ Top - WhiteIPAM
 {% block content %}
 <div>
   <h1>Top page</h1>
-    <p>Hi xxxxx!</p>
-  <a href="#">Logout</a>
+    <p>Hi, {{ user.get_username }}!</p>
+  <a href="{% url 'network:logout' %}">Logout</a>
 </div>
 
 {% endblock %}
