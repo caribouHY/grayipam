@@ -4,7 +4,7 @@ from .models import Network
 
 
 class NetworkAdmin(admin.ModelAdmin):
-    fields = ['name', 'ipv4_cidr', 'vid', 'note']
+    fields = ['name', 'vid', 'note']
     search_fields = ['ipv4_cidr']
 
 
