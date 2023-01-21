@@ -8,9 +8,17 @@
 {% endblock %}
 
 {% block body %}
-<div class="d-flex w-100 h-100 mx-auto flex-column">
-  <main class="m-auto">
+<div class="d-flex w-100 h-100">
+  <main class="d-flex flex-column align-items-center m-auto">
+    <div>
     <h1 class="text-center mb-4">GrayIPAM</h1>
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+    {% endfor %}
+  </div>
+  <div>
     <form method="post" class="pb-5">
       {% csrf_token %}
       <div class="form-floating mb-3">
@@ -23,6 +31,7 @@
       </div>
       <button type="submit" class="btn btn-lg btn-primary w-100">ログイン</button>
     </form>
+  </div>
   </main>
 </div>
 {% endblock %}

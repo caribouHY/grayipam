@@ -23,10 +23,10 @@
             アカウント
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarAccount">
-            <li><a class="dropdown-item disabled">username</a></li>
+            <li><a class="dropdown-item disabled">{{ user.get_username|default:"anonymous" }}</a></li>
             <li><a class="dropdown-item" href="#">設定</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">ログアウト</a></li>
+            <li><a class="dropdown-item" href="{% url 'network:logout' %}">ログアウト</a></li>
           </ul>
         </li>
       </ul>

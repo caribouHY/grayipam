@@ -16,11 +16,6 @@ class MyModelForm(ModelForm):
 
 
 class LoginForm(AuthenticationForm):
-    error_messages = {
-        "invalid_login": 'ユーザー名またはパスワードが違います。',
-        "inactive": "このアカウントは無効です。",
-    }
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
