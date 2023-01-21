@@ -45,6 +45,9 @@ class Network(models.Model):
     class Meta:
         ordering = ['ipv4_min']
 
+    def __str__(self) -> str:
+        return self.ipv4_cidr
+
     def save(self, **kwargs):
         net = ipaddress.IPv4Network(self.ipv4_cidr)
         self.ipv4_max = int(net.broadcast_address)
