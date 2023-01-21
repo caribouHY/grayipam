@@ -8,5 +8,6 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path('network/', views.NetworkList.as_view(), name='network_list'),
-    path('network/create', views.NetworkCreate.as_view(), name='network_create')
+    path('network/create', views.NetworkCreate.as_view(), name='network_create'),
+    path('network/<int:pk>/', views.NetworkDetail.as_view(), name='network_detail'),
 ]

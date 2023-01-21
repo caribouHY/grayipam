@@ -48,6 +48,9 @@ class Network(models.Model):
     def __str__(self) -> str:
         return self.ipv4_cidr
 
+    def get_prefix(self):
+        return ipaddress.IPv4Network(self.ipv4_cidr).prefixlen
+
     def save(self, **kwargs):
         net = ipaddress.IPv4Network(self.ipv4_cidr)
         self.ipv4_max = int(net.broadcast_address)

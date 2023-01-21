@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
@@ -31,3 +31,8 @@ class NetworkCreate(LoginRequiredMixin, CreateView):
     model = Network
     form_class = NetworkForm
     success_url = reverse_lazy('network:network_list')
+
+
+class NetworkDetail(LoginRequiredMixin, DetailView):
+    template_name = 'network/network_detail.html'
+    model = Network
