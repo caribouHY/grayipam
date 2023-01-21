@@ -1,7 +1,10 @@
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from network.forms import LoginForm
+from django.urls import reverse_lazy
+from .forms import LoginForm, NetworkForm
+from .models import Network
 
 
 class Index(LoginRequiredMixin, TemplateView):
@@ -15,3 +18,14 @@ class Login(LoginView):
 
 class Logout(LogoutView):
     template_name = 'network/login.html'
+
+
+class NetworkList(LoginRequiredMixin, TemplateView):
+    template_name = 'network/network_list.html'
+
+
+class NetworkCreate(LoginRequiredMixin, CreateView):
+    template_name = 'network/network_create.html'
+    model = Network
+    form_class = NetworkForm
+    success_url = reverse_lazy('network:network_list')

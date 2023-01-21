@@ -1,0 +1,31 @@
+{% extends "base_main.html" %}
+
+{% block title %}
+ネットワーク - GrayIPAM
+{% endblock %}
+
+
+{% block content %}
+<main class="container mt-3">
+  <div class="row mb-3">
+    <div class="col">
+      <h2>ネットワーク一覧</h1>
+
+        <a class="btn btn-primary" href="{% url 'network:network_create' %}" role="button">追加</a>
+        <table class="table table-hover table-bordered mt-3">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col">IPv4</th>
+              <th scope="col">VLAN ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Note</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+          </tbody>
+        </table>
+    </div>
+  </div>
+</main>
+{% endblock %}
