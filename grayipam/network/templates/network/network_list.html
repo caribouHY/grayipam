@@ -22,7 +22,14 @@
             </tr>
           </thead>
           <tbody>
-           
+            {% for net in object_list %}
+            <tr>
+              <td><a href="#">{{ net.ipv4_cidr }}</a></td>
+              <td>{{ net.vid }}</td>
+              <td>{{ net.name|default:""  }}</td>
+              <td>{{ net.note|default:""  }}</td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
     </div>

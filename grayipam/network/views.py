@@ -1,3 +1,4 @@
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
@@ -20,8 +21,9 @@ class Logout(LogoutView):
     template_name = 'network/login.html'
 
 
-class NetworkList(LoginRequiredMixin, TemplateView):
+class NetworkList(LoginRequiredMixin, ListView):
     template_name = 'network/network_list.html'
+    model = Network
 
 
 class NetworkCreate(LoginRequiredMixin, CreateView):

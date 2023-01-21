@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Form
+from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Network
 

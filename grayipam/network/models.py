@@ -43,7 +43,7 @@ class Network(models.Model):
         verbose_name='メモ', max_length=64, null=True, blank=True)
 
     class Meta:
-        ordering = ['ipv4_cidr']
+        ordering = ['ipv4_min']
 
     def save(self, **kwargs):
         net = ipaddress.IPv4Network(self.ipv4_cidr)
