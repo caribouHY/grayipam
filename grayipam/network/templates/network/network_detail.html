@@ -11,6 +11,29 @@
   <div class="row mb-3">
     <div class="col">
       <h2 class="mb-3">ネットワーク</h2>
+      <div class="my-3 d-flex">
+        <button  href="#" class="btn btn-danger ms-auto" data-bs-toggle="modal" data-bs-target="#deleteModal">削除</button >
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">削除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>削除すると復元できませんが、よろしいですか？</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                <form action="{% url 'network:network_delete' pk=network.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <ul class="list-group">
         <li class="list-group-item">名前 : {{ network.name }}</li>
         <li class="list-group-item">IPv4 : {{ network.ipv4_cidr }}</li>
@@ -38,9 +61,9 @@
 
   const addrEle = document.getElementById('address-list');
 
-  for (let i = ipv4_min+1; i < ipv4_max; i++) {
+  for (let i = ipv4_min + 1; i < ipv4_max; i++) {
     const btn = document.createElement('button');
-    btn.classList.add('addr','addr-none', 'btn', 'btn-sm', 'me-2', 'mb-2', 'disabled');
+    btn.classList.add('addr', 'addr-none', 'btn', 'btn-sm', 'me-2', 'mb-2', 'disabled');
     btn.setAttribute('data-ip', long2ip(i));
     btn.textContent = long2hostip(i, prefix);
     addrEle.appendChild(btn);

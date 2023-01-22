@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import network
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('network.urls')),
 ]
+
+handler404 = network.views.error_404

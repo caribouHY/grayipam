@@ -1,11 +1,16 @@
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from .forms import LoginForm, NetworkForm
 from .models import Network
+
+
+def error_404(request, exception):
+    return redirect(reverse('network:index'))
 
 
 class Index(LoginRequiredMixin, TemplateView):
@@ -36,3 +41,9 @@ class NetworkCreate(LoginRequiredMixin, CreateView):
 class NetworkDetail(LoginRequiredMixin, DetailView):
     template_name = 'network/network_detail.html'
     model = Network
+
+
+class NetworkDelete(LoginRequiredMixin, DeleteView):
+    model = Network
+    http_method_names = ['post']
+    success_url = reverse_lazy('network:network_list')
