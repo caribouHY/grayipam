@@ -49,6 +49,9 @@ class Network(models.Model):
     def __str__(self) -> str:
         return self.ipv4_cidr
 
+    def get_absolute_url(self):
+        return reverse('network:network_detail', kwargs={'pk': self.id})
+
     def get_prefix(self):
         return ipaddress.IPv4Network(self.ipv4_cidr).prefixlen
 
@@ -65,7 +68,7 @@ class Host(models.Model):
     ipv4 = models.CharField(
         verbose_name='IPv4アドレス', max_length=15, unique=True, validators=[validate_ipv4_address])
     ipv4_number = models.IntegerField(unique=True)
-    network = models.ForeignKey(Network, on_delete=models.CASCADE)
+    network = models.ForeignKey(Network, on_delete=models.CASCADE, related_name='host')
 
     class Meta:
         ordering = ['ipv4_number']
