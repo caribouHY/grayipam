@@ -64,7 +64,10 @@
   for (let i = ipv4_min + 1; i < ipv4_max; i++) {
     const btn = document.createElement('button');
     btn.classList.add('addr', 'addr-none', 'btn', 'btn-sm', 'me-2', 'mb-2', 'disabled');
-    btn.setAttribute('data-ip', long2ip(i));
+    btn.setAttribute('type', 'button');
+    const ip = long2ip(i)
+    btn.setAttribute('data-ip', ip);
+    btn.setAttribute('title', ip);
     btn.textContent = long2hostip(i, prefix);
     addrEle.appendChild(btn);
   }
