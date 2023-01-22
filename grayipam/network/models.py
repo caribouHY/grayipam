@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, validate_ipv4_address
 import ipaddress
 
 
@@ -56,3 +57,33 @@ class Network(models.Model):
         self.ipv4_max = int(net.broadcast_address)
         self.ipv4_min = int(net.network_address)
         return super().save(**kwargs)
+
+
+class Host(models.Model):
+    hostname = models.CharField(
+        verbose_name='ホスト名', max_length=64, null=True, blank=True)
+    ipv4 = models.CharField(
+        verbose_name='IPv4アドレス', max_length=15, unique=True, validators=[validate_ipv4_address])
+    ipv4_number = models.IntegerField(unique=True)
+    network = models.ForeignKey(Network, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['ipv4_number']
+
+    def __str__(self) -> str:
+        if self.hostname is None or self.hostname == '':
+            return self.ipv4
+        return '{} ({})'.format(self.hostname, self.ipv4)
+
+    def clean(self):
+        num = int(ipaddress.IPv4Address(str(self.ipv4)))
+        if num <= self.network.ipv4_min or self.network.ipv4_max <= num:
+            raise ValidationError('IPv4アドレスがネットワークの範囲外です。')
+        return super().clean()
+
+    def save(self, **kwargs):
+        self.ipv4_number = int(ipaddress.IPv4Address(str(self.ipv4)))
+        return super().save(**kwargs)
+
+    def get_absolute_url(self):
+        return reverse('network:network_detail', kwargs={'pk': self.network.id})
