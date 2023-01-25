@@ -39,12 +39,48 @@
         <li class="list-group-item">IPv4 : {{ network.ipv4_cidr }}</li>
         <li class="list-group-item">VLAN ID : {{ network.vid }}</li>
         <li class="list-group-item">メモ : {{ network.note|default:"" }}</li>
+        <li class="list-group-item">
+          アドレス数 :
+          <span class="badge bg-success mx-1">ホスト <span id="host-count"></span></span> 
+          <span class="badge bg-light text-dark mx-1">未使用 <span id="null-count"></span></span>
+        </li>
       </ul>
 
       <div class="mt-3 mb-3">
         <h3>アドレス</h3>
         <div id="address-list" class="d-flex flex-wrap"></div>
       </div>
+
+      <div class="modal fade" id="hostCreateModal" tabindex="-1" aria-labelledby="hostCreateModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="post" action="{% url 'network:host_create' pk=network.id %}" name="host-create">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="hostRegistModalLabel">新規ホスト作成</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    {{ host_form.ipv4.label_tag}}
+                    {{ host_form.ipv4}}
+                  </div>
+                  <div class="mb-3">
+                    {{ host_form.hostname.label_tag}}
+                    {{ host_form.hostname}}
+                    {{ host_form.network}}
+                    {% csrf_token %}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <input type="reset" class="btn btn-secondary" data-bs-dismiss="modal" value="キャンセル">
+                  <button type="submit" class="btn btn-primary">作成</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
     </div>
   </div>
 </main>
@@ -58,6 +94,8 @@
   const ipv4_min = {{ network.ipv4_min }};
   const ipv4_max = {{ network.ipv4_max }};
   const prefix = {{ network.get_prefix }};
+  let host_count = 0;
+  let null_count = 0;
 
   const hosts = [
     {% for host in network.host.all %}{ id: '{{host.id}}', hostname: '{{host.hostname|default:""}}', ipv4: '{{host.ipv4}}' }, {% endfor %}
@@ -89,13 +127,23 @@
   });
 
   document.querySelectorAll('.addr').forEach(ele => {
-    if (ele.dataset.type == 'null') {
+    const type = ele.dataset.type;
+    if (type == 'null') {
       ele.classList.add('btn-outline-dark');
-      // ele.setAttribute('data-bs-toggle', 'modal');
-      // ele.setAttribute('data-bs-target', '#hostRegistModal');
-      //ele.addEventListener('click', clickHostRegister);
+      ele.setAttribute('data-bs-toggle', 'modal');
+      ele.setAttribute('data-bs-target', '#hostCreateModal');
+      ele.addEventListener('click', e => {
+        const ipv4_input = document.getElementById('id_ipv4');
+        ipv4_input.value = e.target.dataset.ip;
+        ipv4_input.setAttribute('readonly', true);
+      });
+      null_count++;
+    }else if(type == 'host'){
+      host_count++;
     }
     ele.classList.remove('disabled');
   });
+  document.getElementById('host-count').innerText = host_count;
+  document.getElementById('null-count').innerText = null_count;
 </script>
 {% endblock %}

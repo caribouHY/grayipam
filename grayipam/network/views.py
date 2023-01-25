@@ -5,8 +5,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from .forms import LoginForm, NetworkForm
-from .models import Network
+from .forms import LoginForm, NetworkForm, HostForm
+from .models import Network, Host
 
 
 def error_404(request, exception):
@@ -42,8 +42,29 @@ class NetworkDetail(LoginRequiredMixin, DetailView):
     template_name = 'network/network_detail.html'
     model = Network
 
+    def get_context_data(self, **kwargs):
+        if 'host_form' not in kwargs:
+            form = HostForm(initial={'network': self.object})
+            from django.forms import HiddenInput
+            form.fields['network'].widget = HiddenInput()
+            kwargs['host_form'] = form
+        return super().get_context_data(**kwargs)
+
 
 class NetworkDelete(LoginRequiredMixin, DeleteView):
     model = Network
     http_method_names = ['post']
     success_url = reverse_lazy('network:network_list')
+
+
+class HostCreate(LoginRequiredMixin, CreateView):
+    template_name = 'network/form_error.html'
+    model = Host
+    form_class = HostForm
+    http_method_names = ['post']
+
+    def get_context_data(self, **kwargs):
+        if "next_url" not in kwargs:
+            kwargs["next_url"] = reverse_lazy(
+                'network:network_detail', kwargs={"pk": self.kwargs["pk"]})
+        return super().get_context_data(**kwargs)

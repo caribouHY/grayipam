@@ -1,0 +1,26 @@
+{% extends "base_main.html" %}
+
+{% block title %}
+GrayIPAM
+{% endblock %}
+
+{% block content %}
+<main class="container mt-5">
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+        <div>{{ error }}</div>
+        {% endfor %}
+        {% for field in form %}
+        {% for error in field.errors %}<div>{{ error }}</div>{% endfor %}
+        {% endfor %}
+      </div>
+      <a href="{{next_url}}" class="btn btn-primary" role="button">OK</a>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

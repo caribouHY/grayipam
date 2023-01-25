@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Network
+from .models import Network, Host
 
 
 class MyModelForm(ModelForm):
@@ -35,3 +35,10 @@ class NetworkForm(MyModelForm):
 
         self.fields['vid'].widget.attrs['max'] = 0xfff
         self.fields['vid'].widget.attrs['min'] = 0
+
+
+class HostForm(MyModelForm):
+
+    class Meta:
+        model = Host
+        fields = ['network', 'ipv4', 'hostname']

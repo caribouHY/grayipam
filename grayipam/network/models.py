@@ -68,10 +68,11 @@ class Host(models.Model):
     ipv4 = models.CharField(
         verbose_name='IPv4アドレス', max_length=15, unique=True, validators=[validate_ipv4_address])
     ipv4_number = models.IntegerField(unique=True)
-    network = models.ForeignKey(Network, on_delete=models.CASCADE, related_name='host')
+    network = models.ForeignKey(Network, on_delete=models.CASCADE, related_name='host', verbose_name='ネットワーク')
 
     class Meta:
         ordering = ['ipv4_number']
+        verbose_name = 'ホスト'
 
     def __str__(self) -> str:
         if self.hostname is None or self.hostname == '':

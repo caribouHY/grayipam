@@ -11,4 +11,5 @@ urlpatterns = [
     path('network/create', views.NetworkCreate.as_view(), name='network_create'),
     path('network/<int:pk>/', views.NetworkDetail.as_view(), name='network_detail'),
     path('network/<int:pk>/delete/', views.NetworkDelete.as_view(), name='network_delete'),
+    path('network/<int:pk>/host/create', views.HostCreate.as_view(), name='host_create'),
 ]
